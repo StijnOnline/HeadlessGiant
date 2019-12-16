@@ -12,9 +12,10 @@ public class foot : MonoBehaviour
     void Update()
     {
         transform.position = (controller.localPosition) * scale;
-        Vector3 trackerRotation = controller.localRotation.eulerAngles + rotationOffset;
-        trackerRotation.z = 0;
-        trackerRotation.x *= 0.5f;
-        transform.rotation = Quaternion.Euler(trackerRotation);
+        //Vector3 trackerRotation = controller.localRotation.eulerAngles + rotationOffset;
+        //trackerRotation.z = 0;
+        //trackerRotation.x *= 0.5f;
+        //transform.rotation = Quaternion.Euler(trackerRotation);
+        transform.rotation = controller.localRotation * Quaternion.Euler(rotationOffset);
     }
 }

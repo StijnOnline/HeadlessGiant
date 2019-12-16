@@ -14,6 +14,8 @@ public class IKControl : MonoBehaviour {
     public Transform rightFootObj = null;
     public Transform leftFootObj = null;
     public float yOffset;
+    public Vector3 rotOffset;
+    public Vector2 minMaxFootHeight;
 
     void Start() {
         animator = GetComponent<Animator>();
@@ -36,9 +38,9 @@ public class IKControl : MonoBehaviour {
                     footAVG.y = minHeight;
                     transform.position = footAVG  + Vector3.up * yOffset;
 
-                    //FIX
+                    
                     Quaternion footRot = Quaternion.LookRotation((rightFootObj.forward + leftFootObj.forward), (leftFootObj.up + rightFootObj.up) * 0.5f);                    
-                    transform.rotation = footRot;
+                    transform.rotation = footRot * Quaternion.Euler(rotOffset);
                     
 
                 }
@@ -63,14 +65,18 @@ public class IKControl : MonoBehaviour {
                 if(rightFootObj != null) {
                     animator.SetIKPositionWeight(AvatarIKGoal.RightFoot, 1);
                     animator.SetIKRotationWeight(AvatarIKGoal.RightFoot, 1);
-                    animator.SetIKPosition(AvatarIKGoal.RightFoot, rightFootObj.position);
+                    Vector3 pos = rightFootObj.position;
+                    //pos.y = Mathf.Min(minMaxFootHeight.y, Mathf.Max(minMaxFootHeight.x, pos.y));
+                    animator.SetIKPosition(AvatarIKGoal.RightFoot, pos);
                     animator.SetIKRotation(AvatarIKGoal.RightFoot, rightFootObj.rotation);
                 }
 
                 if(leftFootObj != null) {
                     animator.SetIKPositionWeight(AvatarIKGoal.LeftFoot, 1);
                     animator.SetIKRotationWeight(AvatarIKGoal.LeftFoot, 1);
-                    animator.SetIKPosition(AvatarIKGoal.LeftFoot, leftFootObj.position);
+                    Vector3 pos = leftFootObj.position;
+                    //pos.y = Mathf.Min(minMaxFootHeight.y, Mathf.Max(minMaxFootHeight.x, pos.y));
+                    animator.SetIKPosition(AvatarIKGoal.LeftFoot, pos);
                     animator.SetIKRotation(AvatarIKGoal.LeftFoot, leftFootObj.rotation);
                 }
 

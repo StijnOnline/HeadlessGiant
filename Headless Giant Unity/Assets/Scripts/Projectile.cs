@@ -6,13 +6,17 @@ public class Projectile : MonoBehaviour
 {
     Rigidbody rb;
     public float attackPower = 1;
+
+    public Vector2 xSpeedRange = new Vector2(-1.5f, 1.5f);
+    public Vector2 ySpeedRange = new Vector2(3, 8);
+    public Vector2 zSpeedRange = new Vector2(6, 12);
     
     void Start()
     {
         float xSpeed, ySpeed, zSpeed;
-        xSpeed = Random.Range(-1.5f, 1.5f);
-        ySpeed = Random.Range(3, 8);
-        zSpeed = Random.Range(6, 12);
+        xSpeed = Random.Range(xSpeedRange.x, xSpeedRange.y);
+        ySpeed = Random.Range(ySpeedRange.x, ySpeedRange.y);
+        zSpeed = Random.Range(zSpeedRange.x, zSpeedRange.y);
         rb = GetComponent<Rigidbody>();
         Vector3 force = transform.right * xSpeed + transform.up * ySpeed + transform.forward * zSpeed;
         rb.AddForce(force, ForceMode.Impulse);

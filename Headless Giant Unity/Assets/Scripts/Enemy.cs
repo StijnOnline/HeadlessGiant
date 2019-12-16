@@ -29,7 +29,17 @@ public class Enemy : MonoBehaviour {
 
     Quaternion startRotation;
 
+    public AudioClip clip;
+    private AudioSource audioSource;
+    private Rigidbody rb;
+
     private void Start() {
+
+        audioSource = GetComponent<AudioSource>();
+        if(audioSource == null)
+            audioSource = gameObject.AddComponent<AudioSource>();
+
+        rb = GetComponent<Rigidbody>();
 
         float yy = transform.rotation.eulerAngles.y * Mathf.PI / 180.0f;
 
@@ -37,6 +47,7 @@ public class Enemy : MonoBehaviour {
         float angle = -Random.Range(yy - 0.5f * arcSize, yy + 0.5f * arcSize) - 0.5f * Mathf.PI;
         target = new Vector3(distFromTower * Mathf.Cos(angle), 0, distFromTower * Mathf.Sin(angle));
 
+        //TODO add back
         navMeshObstacle = GetComponent<NavMeshObstacle>();
         navMeshObstacle.enabled = false;
 
@@ -44,8 +55,23 @@ public class Enemy : MonoBehaviour {
         navMeshAgent.speed = speed;
     }
 
-    public void Die() {
-        Debug.Log("OEF");
+    public void Die(Vector3 hitspeed) {
+        rb.constraints = RigidbodyConstraints.None;
+
+        Debug.Log("OOF");
+
+        navMeshAgent.enabled = false;
+        
+        if(rb != null) {
+            rb.AddForce(hitspeed * 300f + Vector3.up * 500f);
+            Debug.Log("WOO");
+        }
+
+        if(clip != null)
+            audioSource.PlayOneShot(clip, 1);
+
+        Destroy(gameObject, 3f);
+
     }
 
     bool reachedTarget()

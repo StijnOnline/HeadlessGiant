@@ -36,6 +36,7 @@ public class AudioPlayer : MonoBehaviour {
         if(loadedAudio != null) {
             foreach(AudioClip audioClip in loadedAudio) {
                 audioClips.Add(audioClip.name, audioClip);
+                Debug.Log(audioClip.name);
             }
         } else {
             Debug.LogWarning("No Audio Resources loaded");

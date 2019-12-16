@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class footRB : MonoBehaviour
 {
     public Transform foot;
+    public Shake shake;
 
     private Rigidbody rigidB;
 
@@ -32,19 +33,10 @@ public class footRB : MonoBehaviour
     private void OnCollisionEnter(Collision collision) {
         GameObject other = collision.gameObject;
         if(other.layer == LayerMask.NameToLayer("Enemy")) {
-            //Enemy enemy = other.GetComponent<Enemy>();
-            //enemy.Die();
-            Debug.Log("OOF");
+            Enemy enemy = other.GetComponent<Enemy>();
+            enemy.Die(collision.relativeVelocity);
 
-            other.GetComponent<NavMeshAgent>().enabled = false;
-            Rigidbody rb;
-            rb = other.GetComponent<Rigidbody>();
-            if(!rb) {
-               rb = other.AddComponent<Rigidbody>();
-            }             
-            rb.AddForce(collision.relativeVelocity * 300f + Vector3.up * 500f);
-
-            Destroy(other, 3f);
+            shake.StartShake();
         }
     }
 }

@@ -7,42 +7,120 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshObstacle))]
 public class Enemy : MonoBehaviour {
     public float speed;
+    public float distFromTower = 2.5f;
     public NavMeshAgent navMeshAgent { get; private set; }
     public NavMeshObstacle navMeshObstacle { get; private set; }
-    private Vector3 target = Vector3.zero;
-    public float targetDist;
+    private Vector3 target;
+
+    bool moving = true, ready = false;
+    public Vector3 tarDist;
+
+    public GameObject arrowObject;
+    public GameObject explosionObject;
+    public float spawnDelay = 5f;
+    private float lastSpawn = 5f;
+
+    Quaternion fromReady, toReady;
+    float fromReadyAngle, toReadyAngle;
+    float rotateTimer;
+    static readonly float rotateTime = 2.0f;
+
+    public int attackPower = 1;
+
+    Quaternion startRotation;
 
     private void Start() {
+
+        float yy = transform.rotation.eulerAngles.y * Mathf.PI / 180.0f;
+
+        float arcSize = 0.5f * Mathf.PI;
+        float angle = -Random.Range(yy - 0.5f * arcSize, yy + 0.5f * arcSize) - 0.5f * Mathf.PI;
+        target = new Vector3(distFromTower * Mathf.Cos(angle), 0, distFromTower * Mathf.Sin(angle));
+
         navMeshObstacle = GetComponent<NavMeshObstacle>();
         navMeshObstacle.enabled = false;
 
         navMeshAgent = GetComponent<NavMeshAgent>();
         navMeshAgent.speed = speed;
-
-        
     }
 
     public void Die() {
         Debug.Log("OEF");
     }
 
+    bool reachedTarget()
+    {
+        return (Mathf.Sqrt(tarDist.x * tarDist.x + tarDist.z * tarDist.z) <= 0.01f);
+    }
+
     public void Update() {
-        //float dist = Mathf.Sqrt(Mathf.Pow((transform.position - target).x, 2) + Mathf.Pow((transform.position - target).z, 2));
+        Debug.DrawLine(transform.position, transform.position + transform.forward);
+        tarDist = target - navMeshAgent.destination;
 
-
-        if(navMeshAgent.isOnNavMesh) {
-
+        if (navMeshAgent.isOnNavMesh && moving) {
+            
             NavMeshHit hit;
             if(NavMesh.SamplePosition(target - (target - transform.position).normalized * 0.1f, out hit, 5f, NavMesh.AllAreas)) {
                 navMeshAgent.SetDestination(hit.position);
             }
-            if(navMeshAgent.remainingDistance != 0 && navMeshAgent.remainingDistance < targetDist) {
+
+            if (reachedTarget())
+            {
+                moving = false;
                 navMeshAgent.enabled = false;
-                navMeshObstacle.enabled = true;
+                lastSpawn = Time.time;
+                fromReadyAngle = transform.rotation.eulerAngles.y;
+                toReadyAngle = Vector3.Angle(transform.position, new Vector3(0, transform.position.y, 0));
+                rotateTimer = rotateTime;
+
+
+                fromReady = transform.rotation;
+                transform.LookAt(new Vector3(0, transform.position.y, 0));
+                toReady = transform.rotation;
+                transform.rotation = fromReady;
             }
         }
 
+        if (!moving)
+        {
+            if (!ready)
+            {
+                rotateTimer -= Time.deltaTime;
+                if (rotateTimer < 0)
+                {
+                    ready = true;
+                    transform.LookAt(new Vector3(0, transform.position.y, 0));
+                }
+                else
+                {
+                    float t = (1.0f - rotateTimer / rotateTime);
+                    transform.rotation = Quaternion.Lerp(fromReady, toReady, t);
+                }
+            }
+
+            //schiet pijlen
+            else if (Time.time > lastSpawn + spawnDelay)
+            {
+                GameObject arrow = Instantiate(arrowObject, transform.position + transform.forward * 0.2f, transform.rotation);
+                Projectile pr = arrow.GetComponent<Projectile>();
+                pr.attackPower = attackPower;
+                lastSpawn = Time.time;
+            }
+        }
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.layer == 10)
+        {
+            Destroy(gameObject);
+        }
     }
 
-
+    private void OnDestroy()
+    {
+        if (explosionObject != null)
+        {
+            Instantiate(explosionObject, transform.position, transform.rotation);
+        }
+    }
 }

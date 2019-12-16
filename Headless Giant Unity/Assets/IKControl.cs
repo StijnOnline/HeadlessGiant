@@ -12,7 +12,8 @@ public class IKControl : MonoBehaviour {
     public Transform rightHandObj = null;
     public Transform leftHandObj = null;
     public Transform rightFootObj = null;
-    public Transform LeftFootObj = null;
+    public Transform leftFootObj = null;
+    public float yOffset;
 
     void Start() {
         animator = GetComponent<Animator>();
@@ -26,15 +27,33 @@ public class IKControl : MonoBehaviour {
             if(ikActive) {
 
 
-                // Set the right hand target position and rotation, if one has been assigned
-                if(rightHandObj != null) {
+
+                //Position the model
+                if(rightFootObj != null && leftFootObj != null && rightFootObj.gameObject.activeSelf && leftFootObj.gameObject.activeSelf) {
+
+                    Vector3 footAVG = leftFootObj.position - (leftFootObj.position - rightFootObj.position) * 0.5f;
+                    float minHeight = Mathf.Min(leftFootObj.position.y, rightFootObj.position.y);
+                    footAVG.y = minHeight;
+                    transform.position = footAVG  + Vector3.up * yOffset;
+
+                    //FIX
+                    Quaternion footRot = Quaternion.LookRotation((rightFootObj.forward + leftFootObj.forward), (leftFootObj.up + rightFootObj.up) * 0.5f);                    
+                    transform.rotation = footRot;
+                    
+
+                }
+
+
+
+                    // Set the right hand target position and rotation, if one has been assigned
+                if(rightHandObj != null && rightHandObj.gameObject.activeSelf) {
                     animator.SetIKPositionWeight(AvatarIKGoal.RightHand, 1);
                     animator.SetIKRotationWeight(AvatarIKGoal.RightHand, 1);
                     animator.SetIKPosition(AvatarIKGoal.RightHand, rightHandObj.position);
                     animator.SetIKRotation(AvatarIKGoal.RightHand, rightHandObj.rotation);
                 }
 
-                if(leftHandObj != null) {
+                if(leftHandObj != null && leftHandObj.gameObject.activeSelf) {
                     animator.SetIKPositionWeight(AvatarIKGoal.LeftHand, 1);
                     animator.SetIKRotationWeight(AvatarIKGoal.LeftHand, 1);
                     animator.SetIKPosition(AvatarIKGoal.LeftHand, leftHandObj.position);
@@ -48,11 +67,11 @@ public class IKControl : MonoBehaviour {
                     animator.SetIKRotation(AvatarIKGoal.RightFoot, rightFootObj.rotation);
                 }
 
-                if(LeftFootObj != null) {
+                if(leftFootObj != null) {
                     animator.SetIKPositionWeight(AvatarIKGoal.LeftFoot, 1);
                     animator.SetIKRotationWeight(AvatarIKGoal.LeftFoot, 1);
-                    animator.SetIKPosition(AvatarIKGoal.LeftFoot, LeftFootObj.position);
-                    animator.SetIKRotation(AvatarIKGoal.LeftFoot, LeftFootObj.rotation);
+                    animator.SetIKPosition(AvatarIKGoal.LeftFoot, leftFootObj.position);
+                    animator.SetIKRotation(AvatarIKGoal.LeftFoot, leftFootObj.rotation);
                 }
 
             }

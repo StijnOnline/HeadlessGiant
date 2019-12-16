@@ -209,7 +209,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &503892291
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -369,7 +369,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 745112236}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.433, y: 0.3, z: 0.234}
+  m_LocalPosition: {x: 0.719, y: 0.15, z: 0.234}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children: []
   m_Father: {fileID: 0}
@@ -393,7 +393,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1024452881
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -729,7 +729,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1819286627}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.246, y: 0.265, z: 0.234}
+  m_LocalPosition: {x: 1.398, y: 0.11499995, z: 0.234}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children: []
   m_Father: {fileID: 0}
@@ -757,7 +757,9 @@ MonoBehaviour:
   rightHandObj: {fileID: 503892294}
   leftHandObj: {fileID: 1024452884}
   rightFootObj: {fileID: 1819286631}
-  LeftFootObj: {fileID: 745112240}
+  leftFootObj: {fileID: 745112240}
+  posOffset: {x: 0, y: 0.85, z: 0}
+  rotOffset: {x: 0, y: 0, z: 0}
 --- !u!95 &1823333547
 Animator:
   serializedVersion: 3

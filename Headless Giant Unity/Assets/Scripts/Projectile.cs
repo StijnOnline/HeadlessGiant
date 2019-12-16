@@ -6,6 +6,8 @@ public class Projectile : MonoBehaviour
 {
     Rigidbody rb;
     public float attackPower = 1;
+    //public AudioSource audioSource;
+    //public AudioClip audioSource;
 
     public Vector2 xSpeedRange = new Vector2(-1.5f, 1.5f);
     public Vector2 ySpeedRange = new Vector2(3, 8);
@@ -34,6 +36,7 @@ public class Projectile : MonoBehaviour
     {
         if (collision.gameObject.layer == 9 || collision.gameObject.layer == 10)
         {
+            //audioSource.PlayOneShot();
             Destroy(gameObject);
         }
     }

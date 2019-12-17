@@ -39,7 +39,8 @@ public class IKControl : MonoBehaviour {
                     transform.position = footAVG  + Vector3.up * yOffset;
 
                     
-                    Quaternion footRot = Quaternion.LookRotation((rightFootObj.forward + leftFootObj.forward), (leftFootObj.up + rightFootObj.up) * 0.5f);                    
+                    Quaternion footRot = Quaternion.LookRotation((rightFootObj.forward + leftFootObj.forward), (Vector3.up + Vector3.up) * 0.5f);     
+                    //footRot
                     transform.rotation = footRot * Quaternion.Euler(rotOffset);
                     
 

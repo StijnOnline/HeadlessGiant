@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Projectile : MonoBehaviour
-{
+public class Projectile : MonoBehaviour {
     Rigidbody rb;
     public float attackPower = 1;
     //public AudioSource audioSource;
@@ -12,9 +11,8 @@ public class Projectile : MonoBehaviour
     public Vector2 xSpeedRange = new Vector2(-1.5f, 1.5f);
     public Vector2 ySpeedRange = new Vector2(3, 8);
     public Vector2 zSpeedRange = new Vector2(6, 12);
-    
-    void Start()
-    {
+
+    void Start() {
         float xSpeed, ySpeed, zSpeed;
         xSpeed = Random.Range(xSpeedRange.x, xSpeedRange.y);
         ySpeed = Random.Range(ySpeedRange.x, ySpeedRange.y);
@@ -24,20 +22,25 @@ public class Projectile : MonoBehaviour
         rb.AddForce(force, ForceMode.Impulse);
     }
 
-    private void Update()
-    {
-        if (transform.position.y < 0)
-        {
+    private void Update() {
+        if(transform.position.y < 0) {
             Destroy(gameObject);
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.layer == 9 || collision.gameObject.layer == 10)
+    private void OnCollisionEnter(Collision collision) {
+        if(collision.gameObject.layer == 10)//tower
         {
+            Tower t = collision.transform.parent.GetComponent<Tower>();
+            if(t != null) {
+                t.TakeDamage(attackPower);
+            }
+
             //audioSource.PlayOneShot();
-            Destroy(gameObject);
         }
+
+        if(collision.gameObject.layer == 9 || collision.gameObject.layer == 10)
+            Destroy(gameObject);
+
     }
 }

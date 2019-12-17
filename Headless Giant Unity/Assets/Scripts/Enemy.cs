@@ -4,36 +4,48 @@ using UnityEngine;
 using UnityEngine.AI;
 
 [RequireComponent(typeof(NavMeshAgent))]
-[RequireComponent(typeof(NavMeshObstacle))]
+//[RequireComponent(typeof(NavMeshObstacle))]
 public class Enemy : MonoBehaviour {
     public float speed;
-    public float distFromTower = 2.5f;
-    public NavMeshAgent navMeshAgent { get; private set; }
-    public NavMeshObstacle navMeshObstacle { get; private set; }
-    private Vector3 target;
-
-    bool moving = true, ready = false;
-    public Vector3 tarDist;
+    public float runDistance;
+    public float stopDistance = 2.5f;
+    public float shootDelay = 5f;
+    public int attackPower = 1;
 
     public GameObject arrowObject;
     public GameObject explosionObject;
-    public float spawnDelay = 5f;
-    private float lastSpawn = 5f;
+    public AudioClip clip;
 
+
+    public NavMeshAgent navMeshAgent { get; private set; }
+    public NavMeshObstacle navMeshObstacle { get; private set; }
+
+
+
+    private Vector3 target;
+    bool moving = true, ready = false;
+    private float lastShot = 5f;
     Quaternion fromReady, toReady;
     float fromReadyAngle, toReadyAngle;
     float rotateTimer;
     static readonly float rotateTime = 2.0f;
 
-    public int attackPower = 1;
 
     Quaternion startRotation;
 
-    public AudioClip clip;
     private AudioSource audioSource;
     private Rigidbody rb;
 
+    public enum EnemyType {
+        wizard,
+        catapult,
+        bomber
+    }
+
+    public EnemyType enemyType;
+
     private void Start() {
+        navMeshAgent = GetComponent<NavMeshAgent>();
 
         audioSource = GetComponent<AudioSource>();
         if(audioSource == null)
@@ -41,17 +53,31 @@ public class Enemy : MonoBehaviour {
 
         rb = GetComponent<Rigidbody>();
 
+
+
+
+
+
+
+
+
         float yy = transform.rotation.eulerAngles.y * Mathf.PI / 180.0f;
 
         float arcSize = 0.5f * Mathf.PI;
         float angle = -Random.Range(yy - 0.5f * arcSize, yy + 0.5f * arcSize) - 0.5f * Mathf.PI;
-        target = new Vector3(distFromTower * Mathf.Cos(angle), 0, distFromTower * Mathf.Sin(angle));
+        target = new Vector3(stopDistance * Mathf.Cos(angle), 0, stopDistance * Mathf.Sin(angle));
+
+        NavMeshHit hit;
+        if(NavMesh.SamplePosition(target, out hit, 5f, NavMesh.AllAreas)) {
+            navMeshAgent.SetDestination(hit.position);
+        }
+
 
         //TODO add back
-        navMeshObstacle = GetComponent<NavMeshObstacle>();
-        navMeshObstacle.enabled = false;
+        //navMeshObstacle = GetComponent<NavMeshObstacle>();
+        //navMeshObstacle.enabled = false;
 
-        navMeshAgent = GetComponent<NavMeshAgent>();
+
         navMeshAgent.speed = speed;
     }
 
@@ -61,7 +87,7 @@ public class Enemy : MonoBehaviour {
         Debug.Log("OOF");
 
         navMeshAgent.enabled = false;
-        
+
         if(rb != null) {
             rb.AddForce(hitspeed * 300f + Vector3.up * 500f);
             Debug.Log("WOO");
@@ -74,27 +100,31 @@ public class Enemy : MonoBehaviour {
 
     }
 
-    bool reachedTarget()
-    {
-        return (Mathf.Sqrt(tarDist.x * tarDist.x + tarDist.z * tarDist.z) <= 0.01f);
+    float currentDist() {
+
+        //Vector3 tarDist = transform.position - navMeshAgent.destination;
+        //return Mathf.Sqrt(tarDist.x * tarDist.x + tarDist.z * tarDist.z);
+
+
+
+        return navMeshAgent.remainingDistance;
     }
 
     public void Update() {
         Debug.DrawLine(transform.position, transform.position + transform.forward);
-        tarDist = target - navMeshAgent.destination;
 
-        if (navMeshAgent.isOnNavMesh && moving) {
-            
-            NavMeshHit hit;
-            if(NavMesh.SamplePosition(target - (target - transform.position).normalized * 0.1f, out hit, 5f, NavMesh.AllAreas)) {
-                navMeshAgent.SetDestination(hit.position);
+        if(navMeshAgent.isOnNavMesh && moving) {
+
+
+
+            if(enemyType == EnemyType.bomber && currentDist() < runDistance) {
+                navMeshAgent.speed = 4 * speed;
             }
 
-            if (reachedTarget())
-            {
+            if(currentDist() < 0.01f) {
                 moving = false;
                 navMeshAgent.enabled = false;
-                lastSpawn = Time.time;
+                lastShot = Time.time;
                 fromReadyAngle = transform.rotation.eulerAngles.y;
                 toReadyAngle = Vector3.Angle(transform.position, new Vector3(0, transform.position.y, 0));
                 rotateTimer = rotateTime;
@@ -107,46 +137,31 @@ public class Enemy : MonoBehaviour {
             }
         }
 
-        if (!moving)
-        {
-            if (!ready)
-            {
+        if(!moving) {
+            if(!ready) {
                 rotateTimer -= Time.deltaTime;
-                if (rotateTimer < 0)
-                {
+                if(rotateTimer < 0) {
                     ready = true;
                     transform.LookAt(new Vector3(0, transform.position.y, 0));
-                }
-                else
-                {
+                } else {
                     float t = (1.0f - rotateTimer / rotateTime);
                     transform.rotation = Quaternion.Lerp(fromReady, toReady, t);
                 }
             }
 
             //schiet pijlen
-            else if (Time.time > lastSpawn + spawnDelay)
-            {
+            else if(Time.time > lastShot + shootDelay && enemyType != EnemyType.bomber) {
                 GameObject arrow = Instantiate(arrowObject, transform.position + transform.forward * 0.2f, transform.rotation);
                 Projectile pr = arrow.GetComponent<Projectile>();
                 pr.attackPower = attackPower;
-                lastSpawn = Time.time;
+                lastShot = Time.time;
             }
         }
     }
-    private void OnCollisionEnter(Collision collision)
-    {
-        if(collision.gameObject.layer == 10)
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    private void OnDestroy()
-    {
-        if (explosionObject != null)
-        {
+    private void OnCollisionEnter(Collision collision) {
+        if(collision.gameObject.layer == 10) {
             Instantiate(explosionObject, transform.position, transform.rotation);
+            Destroy(gameObject);
         }
     }
 }

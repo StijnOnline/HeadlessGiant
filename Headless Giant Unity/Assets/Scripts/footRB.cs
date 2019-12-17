@@ -33,6 +33,7 @@ public class footRB : MonoBehaviour
     private void OnCollisionEnter(Collision collision) {
         GameObject other = collision.gameObject;
         if(other.layer == LayerMask.NameToLayer("Enemy")) {
+
             Enemy enemy = other.GetComponent<Enemy>();
             enemy.Die(collision.relativeVelocity);
 

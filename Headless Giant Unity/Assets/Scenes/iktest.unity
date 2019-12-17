@@ -758,8 +758,9 @@ MonoBehaviour:
   leftHandObj: {fileID: 1024452884}
   rightFootObj: {fileID: 1819286631}
   leftFootObj: {fileID: 745112240}
-  posOffset: {x: 0, y: 0.85, z: 0}
+  yOffset: 0
   rotOffset: {x: 0, y: 0, z: 0}
+  minMaxFootHeight: {x: 0, y: 0}
 --- !u!95 &1823333547
 Animator:
   serializedVersion: 3

@@ -34,18 +34,10 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.layer == 10)//tower
+        if (collision.gameObject.layer == 9 || collision.gameObject.layer == 10)
         {
-            Tower t = collision.transform.parent.GetComponent<Tower>();
-            if(t != null) {
-                t.TakeDamage(attackPower);
-            }
-
             //audioSource.PlayOneShot();
-        }
-
-        if(collision.gameObject.layer == 9 || collision.gameObject.layer == 10)
             Destroy(gameObject);
-
+        }
     }
 }

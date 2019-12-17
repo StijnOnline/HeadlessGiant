@@ -163,9 +163,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d48087ff83e79b4bb2d0ca786b60f5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 0.5
-  runDistance: 3
-  stopDistance: 0.7
+  speed: 1.2
+  runDistance: 4
+  stopDistance: 0.2
   shootDelay: 5
   attackPower: 10
   arrowObject: {fileID: 5231900851638120487, guid: a899cf46d4898f5428c92256ce936d93,
@@ -173,7 +173,7 @@ MonoBehaviour:
   explosionObject: {fileID: 5042756485138665321, guid: 055d2f1c8edd7e04889f06d5e0897467,
     type: 3}
   clip: {fileID: 0}
-  enemyType: 0
+  enemyType: 2
 --- !u!1 &3538694549280577735
 GameObject:
   m_ObjectHideFlags: 0

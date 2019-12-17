@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 1
-  distFromTower: 5
+  distFromTower: 4.5
   tarDist: {x: 0, y: 0, z: 0}
   arrowObject: {fileID: 5231900851638120487, guid: b115c609c42305e47bc6554b58c72861,
     type: 3}

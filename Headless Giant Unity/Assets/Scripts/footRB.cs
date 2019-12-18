@@ -10,12 +10,19 @@ public class footRB : MonoBehaviour
 
     private Rigidbody rigidB;
 
+    private AudioSource audioSource;
+    public List<AudioClip> stompSounds;
+    public float volume = 1f;
+
 
 
     private void Start() {
 
         rigidB = GetComponent<Rigidbody>();
 
+        audioSource = GetComponent<AudioSource>();
+        if(audioSource == null)
+            audioSource = gameObject.AddComponent<AudioSource>();
     }
 
 
@@ -38,6 +45,11 @@ public class footRB : MonoBehaviour
             enemy.Die(collision.relativeVelocity);
 
             shake.StartShake();
+        }
+        if(other.layer == LayerMask.NameToLayer("Ground")) {
+
+            audioSource.PlayOneShot( stompSounds[Random.Range(0, stompSounds.Count)],  volume);
+
         }
     }
 }

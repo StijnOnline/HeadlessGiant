@@ -11,17 +11,35 @@ public class Projectile : MonoBehaviour {
     public Vector2 ySpeedRange = new Vector2(3, 8);
     public Vector2 zSpeedRange = new Vector2(6, 12);
 
+    bool shot = false;
+    float lastSpawn;
+    public float spawnDelay = 0;
+
     void Start() {
+        lastSpawn = Time.time;
+        /*
         float xSpeed, ySpeed, zSpeed;
         xSpeed = Random.Range(xSpeedRange.x, xSpeedRange.y);
         ySpeed = Random.Range(ySpeedRange.x, ySpeedRange.y);
-        zSpeed = Random.Range(zSpeedRange.x, zSpeedRange.y);
-        rb = GetComponent<Rigidbody>();
-        Vector3 force = transform.right * xSpeed + transform.up * ySpeed + transform.forward * zSpeed;
-        rb.AddForce(force, ForceMode.Impulse);
+        zSpeed = Random.Range(zSpeedRange.x, zSpeedRange.y);*/
+        //rb = GetComponent<Rigidbody>();
+        //Vector3 force = transform.right * xSpeed + transform.up * ySpeed + transform.forward * zSpeed;
+        //rb.AddForce(force, ForceMode.Impulse);
     }
 
     private void Update() {
+        if (!shot && Time.time > lastSpawn + spawnDelay)
+        {
+            float xSpeed, ySpeed, zSpeed;
+            xSpeed = Random.Range(xSpeedRange.x, xSpeedRange.y);
+            ySpeed = Random.Range(ySpeedRange.x, ySpeedRange.y);
+            zSpeed = Random.Range(zSpeedRange.x, zSpeedRange.y);
+            Vector3 force = transform.right * xSpeed + transform.up * ySpeed + transform.forward * zSpeed;
+            rb = gameObject.AddComponent<Rigidbody>();
+            rb.AddForce(force, ForceMode.Impulse);
+            shot = true;
+        }
+
         if(transform.position.y < 0) {
             Destroy(gameObject);
         }

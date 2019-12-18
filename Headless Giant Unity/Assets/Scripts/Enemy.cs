@@ -104,7 +104,7 @@ public class Enemy : MonoBehaviour {
     }
 
     public void Update() {
-        Debug.DrawLine(transform.position, transform.position + transform.forward);
+        //Debug.DrawLine(transform.position, transform.position + transform.forward);
 
         if(navMeshAgent.isOnNavMesh && moving) {
 
@@ -151,6 +151,8 @@ public class Enemy : MonoBehaviour {
                 Vector3 offset = Vector3.zero;
                 if (enemyType == EnemyType.wizard)
                 {
+                    Animator ani = transform.GetChild(0).GetComponent<Animator>();
+                    ani.SetBool("Shoot", true);
                     offset = transform.forward * 0.2f;
                 }
 

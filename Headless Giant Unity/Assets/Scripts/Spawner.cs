@@ -9,8 +9,10 @@ public class Spawner : MonoBehaviour
 
     public List<enem> prefabs;
 
-    public float spawnDelay = 10f;
+    //public float spawnDelay = 10f;
     private float lastSpawn = 5f;
+
+    public AnimationCurve spawnDelayCurve;
 
     [System.Serializable]
     public struct enem
@@ -20,12 +22,13 @@ public class Spawner : MonoBehaviour
     }
 
     public void Start() {
-        lastSpawn = -spawnDelay;
+        lastSpawn = -spawnDelayCurve.Evaluate(0); // start spawning
     }
 
     public void Update() {
+
         //Debug.DrawLine(transform.position, transform.position + transform.forward);
-        if(Time.time > lastSpawn + spawnDelay) {
+        if(Time.time > lastSpawn + spawnDelayCurve.Evaluate(Time.time)) {
             Spawn();
             lastSpawn = Time.time;
         }

@@ -23,12 +23,10 @@ public class IKControl : MonoBehaviour {
 
     //a callback for calculating IK
     void OnAnimatorIK() {
-        Debug.Log("on animator IK");
         if(animator) {
 
             //if the IK is active, set the position and rotation directly to the goal. 
             if(ikActive) {
-                Debug.Log("active");
 
 
                 //Position the model

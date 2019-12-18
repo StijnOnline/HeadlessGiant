@@ -61,7 +61,7 @@ public class Enemy : MonoBehaviour {
         target = new Vector3(stopDistance * Mathf.Cos(angle), 0, stopDistance * Mathf.Sin(angle));
 
         NavMeshHit hit;
-        if(NavMesh.SamplePosition(target, out hit, 5f, NavMesh.AllAreas)) {
+        if(NavMesh.SamplePosition(target, out hit, 500f, NavMesh.AllAreas)) {
             navMeshAgent.SetDestination(hit.position);
         }
 

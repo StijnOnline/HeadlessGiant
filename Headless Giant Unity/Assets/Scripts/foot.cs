@@ -6,12 +6,12 @@ public class foot : MonoBehaviour
 {
     public float scale = 5;
     public Transform controller;
-    public Transform VRrig;
+    public Transform relativePos;
     public Vector3 rotationOffset;
     
     void Update()
     {
-        transform.position = (controller.localPosition) * scale;
+        transform.position = (controller.position - relativePos.position) * scale;
         //Vector3 trackerRotation = controller.localRotation.eulerAngles + rotationOffset;
         //trackerRotation.z = 0;
         //trackerRotation.x *= 0.5f;

@@ -1,37 +1,22 @@
-﻿/*
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-<<<<<<< HEAD
-=======
 using Valve.VR;
->>>>>>> e50dcf41b3e8bb515daed726fc887c1da1f1b7a7
 
 
 public class Calibrate : EditorWindow {
 
     public enum Steps {
-        Waiting,
-<<<<<<< HEAD
-        Searching,
-        Aligning,
-        Done
-    }
-    public Steps step;
-
-
-    public bool calibrating = false;
-=======
         SetScripts,
         StartSearching,
         Searching,
         Aligning
     }
-    public Steps step = Steps.SetScripts;
 
 
     public bool calibrating = false;
+    public Steps step = Steps.SetScripts;
 
     public SteamVR_TrackedObject Tracked_leftFoot;
     public SteamVR_TrackedObject Tracked_rightFoot;
@@ -39,40 +24,31 @@ public class Calibrate : EditorWindow {
     public SteamVR_TrackedObject Tracked_rightHand;
 
 
->>>>>>> e50dcf41b3e8bb515daed726fc887c1da1f1b7a7
     public foot leftFoot;
     public foot rightFoot;
     public foot leftHand;
     public foot rightHand;
-
-<<<<<<< HEAD
-
-
-
-    [MenuItem("Window/Event Editor")]
-=======
+              
     public string status;
     public int controller = 0;
 
+    public List<SteamVR_TrackedObject> trackedObjects = new List<SteamVR_TrackedObject>();
+    public Vector3[] lastPositions = new Vector3[16];
+    public float[] distancesTravelled = new float[16];
 
 
-    [MenuItem("Window/Calibration")]
->>>>>>> e50dcf41b3e8bb515daed726fc887c1da1f1b7a7
+    [MenuItem("Window/Calibrate")]
 
     static void Init() {
 
         Calibrate window = (Calibrate)EditorWindow.GetWindow(typeof(Calibrate));
-<<<<<<< HEAD
 
-=======
->>>>>>> e50dcf41b3e8bb515daed726fc887c1da1f1b7a7
     }
 
     void OnGUI() {
 
-<<<<<<< HEAD
-    }
-=======
+    
+
 
         GUILayout.Label("Calibration", "boldLabel");
         GUILayout.Label("Current Step: " + step.ToString());
@@ -102,22 +78,46 @@ public class Calibrate : EditorWindow {
         if(step == Steps.StartSearching) {
             GUILayout.Space(20);
             GUILayout.Label("Find Devices", "boldLabel");
-            if(GUILayout.Button("Start finding devices") && step == Steps.Waiting && EditorApplication.isPlaying) {
+            if(GUILayout.Button("Start finding devices") && step == Steps.StartSearching && EditorApplication.isPlaying) {
                 step = Steps.Searching;
-                status = "Please stand still";
+                CreateDevices();
             }
-            
+            GUILayout.Label("Move one controller at a time, every 5sec the most moved device will be shown");
             GUILayout.Label(status);
         }
 
     }
 
+
     void Update() {
         if(step == Steps.Searching) {
 
+            for(int i = 1; i <= 16; i++) {
+                if(lastPositions[i] != null) {
+                    distancesTravelled[i] += (trackedObjects[i].transform.position - lastPositions[i]).magnitude;
+                }
+                lastPositions[i] = trackedObjects[i].transform.position;
+            }
+
+
+
+            if(Time.time % 1f < 0.05f) {
+                int index = System.Array.IndexOf( distancesTravelled,  Mathf.Max(distancesTravelled)) + 1;
+                status = "Device " + index + " Moved the most";
+            }
 
         }
     }
 
->>>>>>> e50dcf41b3e8bb515daed726fc887c1da1f1b7a7
-}*/
+
+    void CreateDevices() {
+        for(int i = 1; i <= 16; i++) {
+            GameObject go = new GameObject();
+            SteamVR_TrackedObject ob = go.AddComponent<SteamVR_TrackedObject>();
+            ob.index = (SteamVR_TrackedObject.EIndex) i;
+            trackedObjects.Add(ob);
+        }
+        
+    }
+
+}

@@ -110,6 +110,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackPower: 10
+  hitParticles: {fileID: 5042756485138665321, guid: 021b66421262ac44693c8dfc0ed6536b,
+    type: 3}
   xSpeedRange: {x: -1, y: 1}
   ySpeedRange: {x: 5, y: 8}
   zSpeedRange: {x: 5, y: 8}

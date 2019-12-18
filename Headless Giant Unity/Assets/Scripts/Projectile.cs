@@ -5,8 +5,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour {
     Rigidbody rb;
     public float attackPower = 1;
-    //public AudioSource audioSource;
-    //public AudioClip audioSource;
+    public GameObject hitParticles;
 
     public Vector2 xSpeedRange = new Vector2(-1.5f, 1.5f);
     public Vector2 ySpeedRange = new Vector2(3, 8);
@@ -31,6 +30,7 @@ public class Projectile : MonoBehaviour {
     private void OnCollisionEnter(Collision collision) {
         if(collision.gameObject.layer == 10)//tower
         {
+            if (hitParticles != null) Instantiate(hitParticles, transform.position, transform.rotation);
             Tower t = collision.transform.parent.GetComponent<Tower>();
             if(t != null) {
                 t.TakeDamage(attackPower);

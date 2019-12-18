@@ -43,8 +43,10 @@ public class footRB : MonoBehaviour
 
             Enemy enemy = other.GetComponent<Enemy>();
             enemy.Die(collision.relativeVelocity);
-
-            shake.StartShake();
+            if(shake != null)
+                shake.StartShake();
+            else
+                Debug.LogWarning("Could not find shake object");
         }
         if(other.layer == LayerMask.NameToLayer("Ground")) {
 

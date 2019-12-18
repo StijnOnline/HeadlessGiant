@@ -1047,23 +1047,23 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: -0.6524017
-      value: 19.983696
-      inSlope: -0.036908798
-      outSlope: -0.036908798
+      time: 0.17300987
+      value: 2.008795
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0
-      outWeight: 0.1757322
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     - serializedVersion: 3
-      time: 296.85446
-      value: 9.837073
-      inSlope: -0.009248891
-      outSlope: -0.009248891
+      time: 1.1730099
+      value: 2.008795
+      inSlope: 0
+      outSlope: 0
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.23430964
-      outWeight: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
@@ -1075,7 +1075,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 169781171}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.89, z: 0}
+  m_LocalPosition: {x: 0, y: 1.43, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2020163904}
@@ -4490,7 +4490,7 @@ PrefabInstance:
     - target: {fileID: 5871077584594388165, guid: 8cc4f2b849d199746902a4dc825aa38a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -19.787985
+      value: -21.04
       objectReference: {fileID: 0}
     - target: {fileID: 5871077584594388165, guid: 8cc4f2b849d199746902a4dc825aa38a,
         type: 3}
@@ -4500,7 +4500,7 @@ PrefabInstance:
     - target: {fileID: 5871077584594388165, guid: 8cc4f2b849d199746902a4dc825aa38a,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.394496
+      value: -2.41
       objectReference: {fileID: 0}
     - target: {fileID: 5871077584594388165, guid: 8cc4f2b849d199746902a4dc825aa38a,
         type: 3}
@@ -9753,7 +9753,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 1389439e579f85b438111004d3d92da3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -25.231419
+      value: -24.44
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 1389439e579f85b438111004d3d92da3,
         type: 3}
@@ -9763,7 +9763,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 1389439e579f85b438111004d3d92da3,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.135174
+      value: -2.4
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 1389439e579f85b438111004d3d92da3,
         type: 3}
@@ -10843,6 +10843,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b51249a75484fbc4a8906ab7740809d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  vibrate_action:
+    actionPath: /actions/default/out/Haptic
+    needsReinit: 0
+  delay: 0
+  duration: 0.3
+  freq: 50
+  amp: 0.3
+  debug: 0
 --- !u!1001 &1724968014
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12647,8 +12655,8 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
+  m_Convex: 1
+  m_CookingOptions: -1
   m_Mesh: {fileID: 1149973307703454695, guid: db8be2738ac2b5f478d6ed77cafa0cd0, type: 3}
 --- !u!33 &749491895507977859
 MeshFilter:
@@ -12829,6 +12837,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33e712984e8e08842b92f10b8a150287, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  time: 0
   StartHP: 100
   HP: 0
   indicators:
@@ -13417,8 +13426,8 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Convex: 0
-  m_CookingOptions: 14
+  m_Convex: 1
+  m_CookingOptions: -1
   m_Mesh: {fileID: 6590441604739653466, guid: db8be2738ac2b5f478d6ed77cafa0cd0, type: 3}
 --- !u!4 &7779826352114927033
 Transform:

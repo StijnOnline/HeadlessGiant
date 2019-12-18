@@ -60,11 +60,15 @@ public class Enemy : MonoBehaviour {
         float angle = -Random.Range(yy - 0.5f * arcSize, yy + 0.5f * arcSize) - 0.5f * Mathf.PI;
         target = new Vector3(stopDistance * Mathf.Cos(angle), 0, stopDistance * Mathf.Sin(angle));
 
+        
+
         NavMeshHit hit;
         if(NavMesh.SamplePosition(target, out hit, 500f, NavMesh.AllAreas)) {
             navMeshAgent.SetDestination(hit.position);
+        } else {
+            Debug.LogWarning("Could not find suitable destination");
         }
-
+        
 
         //TODO add back
         //navMeshObstacle = GetComponent<NavMeshObstacle>();
@@ -77,13 +81,10 @@ public class Enemy : MonoBehaviour {
     public void Die(Vector3 hitspeed) {
         rb.constraints = RigidbodyConstraints.None;
 
-        Debug.Log("OOF");
-
         navMeshAgent.enabled = false;
 
         if(rb != null) {
             rb.AddForce(hitspeed * 300f + Vector3.up * 500f);
-            Debug.Log("WOO");
         }
 
         if(clip != null)
@@ -95,12 +96,12 @@ public class Enemy : MonoBehaviour {
 
     float currentDist() {
 
-        //Vector3 tarDist = transform.position - navMeshAgent.destination;
-        //return Mathf.Sqrt(tarDist.x * tarDist.x + tarDist.z * tarDist.z);
+        Vector3 tarDist = transform.position - navMeshAgent.destination;
+        return Mathf.Sqrt(tarDist.x * tarDist.x + tarDist.z * tarDist.z);
 
 
 
-        return navMeshAgent.remainingDistance;
+        //return navMeshAgent.remainingDistance;
     }
 
     public void Update() {

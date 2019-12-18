@@ -157,7 +157,7 @@ public class Enemy : MonoBehaviour {
                 if (enemyType == EnemyType.catapult)
                 {
                     offset = transform.up * 0.2f - transform.forward * 0.2f;
-                    if (audioSource != null) audioSource.PlayOneShot(clip, 1);
+                    if (audioSource != null) audioSource.PlayOneShot(clip, 0.5f);
                     cat.fire = true;
                 }
 

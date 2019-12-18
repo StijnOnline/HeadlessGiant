@@ -23,12 +23,14 @@ public class Tower : MonoBehaviour {
             Rigidbody rb = go.GetComponent<Rigidbody>();
             if(rb == null) {
                 rb = go.AddComponent<Rigidbody>();
-                rb.AddForce(Vector3.up * 5);
+                rb.AddForce( new Vector3(Random.Range(-100,100), 100, Random.Range(-100, 100))   );
             }
-            Collider col = go.GetComponent<Collider>();
-            if(col != null) {
-                col.enabled = false;
-            }
+            StartCoroutine(Remove(go, 3f));
         }
+    }
+
+    public IEnumerator Remove(GameObject go, float delay) {
+        yield return new WaitForSeconds(delay);
+        go.SetActive(false);
     }
 }

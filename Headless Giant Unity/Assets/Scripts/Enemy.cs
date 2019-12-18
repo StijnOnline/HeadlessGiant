@@ -170,8 +170,18 @@ public class Enemy : MonoBehaviour {
     }
     private void OnCollisionEnter(Collision collision) {
         if(collision.gameObject.layer == 10) {
+
+            Tower t = collision.transform.parent.GetComponent<Tower>();
+            if(t != null) {
+                t.TakeDamage(attackPower);
+            }
+
             Instantiate(explosionObject, transform.position, transform.rotation);
             Destroy(gameObject);
+        }
+
+        if(collision.gameObject.layer == 8 && enemyType == EnemyType.bomber) { //remove other enemies if hit
+            Destroy(collision.gameObject);
         }
     }
 }

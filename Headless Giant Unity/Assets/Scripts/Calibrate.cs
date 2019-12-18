@@ -1,14 +1,28 @@
-﻿using System.Collections;
+﻿/*
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+<<<<<<< HEAD
+=======
 using Valve.VR;
+>>>>>>> e50dcf41b3e8bb515daed726fc887c1da1f1b7a7
 
 
 public class Calibrate : EditorWindow {
 
     public enum Steps {
         Waiting,
+<<<<<<< HEAD
+        Searching,
+        Aligning,
+        Done
+    }
+    public Steps step;
+
+
+    public bool calibrating = false;
+=======
         SetScripts,
         StartSearching,
         Searching,
@@ -25,25 +39,40 @@ public class Calibrate : EditorWindow {
     public SteamVR_TrackedObject Tracked_rightHand;
 
 
+>>>>>>> e50dcf41b3e8bb515daed726fc887c1da1f1b7a7
     public foot leftFoot;
     public foot rightFoot;
     public foot leftHand;
     public foot rightHand;
 
+<<<<<<< HEAD
+
+
+
+    [MenuItem("Window/Event Editor")]
+=======
     public string status;
     public int controller = 0;
 
 
 
     [MenuItem("Window/Calibration")]
+>>>>>>> e50dcf41b3e8bb515daed726fc887c1da1f1b7a7
 
     static void Init() {
 
         Calibrate window = (Calibrate)EditorWindow.GetWindow(typeof(Calibrate));
+<<<<<<< HEAD
+
+=======
+>>>>>>> e50dcf41b3e8bb515daed726fc887c1da1f1b7a7
     }
 
     void OnGUI() {
 
+<<<<<<< HEAD
+    }
+=======
 
         GUILayout.Label("Calibration", "boldLabel");
         GUILayout.Label("Current Step: " + step.ToString());
@@ -90,4 +119,5 @@ public class Calibrate : EditorWindow {
         }
     }
 
-}
+>>>>>>> e50dcf41b3e8bb515daed726fc887c1da1f1b7a7
+}*/

@@ -14,13 +14,13 @@ public class Enemy : MonoBehaviour {
 
     public GameObject arrowObject;
     public GameObject explosionObject;
+    public GameObject effectObject;
     public AudioClip clip;
-
 
     public NavMeshAgent navMeshAgent { get; private set; }
     public NavMeshObstacle navMeshObstacle { get; private set; }
 
-
+    public Catapult cat;
 
     private Vector3 target;
     bool moving = true, ready = false;
@@ -29,7 +29,6 @@ public class Enemy : MonoBehaviour {
     float fromReadyAngle, toReadyAngle;
     float rotateTimer;
     static readonly float rotateTime = 2.0f;
-
 
     Quaternion startRotation;
 
@@ -46,19 +45,13 @@ public class Enemy : MonoBehaviour {
 
     private void Start() {
         navMeshAgent = GetComponent<NavMeshAgent>();
+        cat = GetComponent<Catapult>();
 
         audioSource = GetComponent<AudioSource>();
         if(audioSource == null)
             audioSource = gameObject.AddComponent<AudioSource>();
 
         rb = GetComponent<Rigidbody>();
-
-
-
-
-
-
-
 
 
         float yy = transform.rotation.eulerAngles.y * Mathf.PI / 180.0f;
@@ -119,6 +112,10 @@ public class Enemy : MonoBehaviour {
 
             if(enemyType == EnemyType.bomber && currentDist() < runDistance) {
                 navMeshAgent.speed = 4 * speed;
+                if (effectObject != null)
+                {
+                    if (effectObject.activeSelf == false) effectObject.SetActive(true);
+                }
             }
 
             if(currentDist() < 0.01f) {
@@ -151,7 +148,20 @@ public class Enemy : MonoBehaviour {
 
             //schiet pijlen
             else if(Time.time > lastShot + shootDelay && enemyType != EnemyType.bomber) {
-                GameObject arrow = Instantiate(arrowObject, transform.position + transform.forward * 0.2f, transform.rotation);
+                Vector3 offset = Vector3.zero;
+                if (enemyType == EnemyType.wizard)
+                {
+                    offset = transform.forward * 0.2f;
+                }
+
+                if (enemyType == EnemyType.catapult)
+                {
+                    offset = transform.up * 0.2f - transform.forward * 0.2f;
+                    if (audioSource != null) audioSource.PlayOneShot(clip, 1);
+                    cat.fire = true;
+                }
+
+                GameObject arrow = Instantiate(arrowObject, transform.position + /*transform.forward * 0.2f*/offset, transform.rotation);
                 Projectile pr = arrow.GetComponent<Projectile>();
                 pr.attackPower = attackPower;
                 lastShot = Time.time;

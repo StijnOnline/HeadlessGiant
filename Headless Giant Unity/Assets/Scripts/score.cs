@@ -17,7 +17,10 @@ public class score : MonoBehaviour
                 PlayerPrefs.SetInt("BestTime",bestTime);
             }
 
-            scoreText.SetText( "Time: " + Time/60 + ":" + Time%60 + "\n"
+            string secs = (Time % 60).ToString();
+            if(secs.Length < 2) { secs = "0" + secs; }
+
+            scoreText.SetText( "Time: " + Time/60 + ":" + secs + "\n"
                 + "Best time: " + bestTime / 60 + ":" + bestTime % 60);
 
 

@@ -164,9 +164,12 @@ public class Enemy : MonoBehaviour {
                     cat.fire = true;
                 }
 
-                GameObject arrow = Instantiate(arrowObject, transform.position + /*transform.forward * 0.2f*/offset, transform.rotation);
-                Projectile pr = arrow.GetComponent<Projectile>();
-                pr.attackPower = attackPower;
+                if (arrowObject != null)
+                {
+                    GameObject arrow = Instantiate(arrowObject, transform.position + /*transform.forward * 0.2f*/offset, transform.rotation);
+                    Projectile pr = arrow.GetComponent<Projectile>();
+                    pr.attackPower = attackPower;
+                }
                 lastShot = Time.time;
             }
         }
@@ -179,7 +182,7 @@ public class Enemy : MonoBehaviour {
                 t.TakeDamage(attackPower);
             }
 
-            Instantiate(explosionObject, transform.position, transform.rotation);
+            if(explosionObject != null) Instantiate(explosionObject, transform.position, transform.rotation);
             Destroy(gameObject);
         }
 

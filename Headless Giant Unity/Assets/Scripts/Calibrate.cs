@@ -32,7 +32,7 @@ public class Calibrate : EditorWindow {
     public string status;
     public int controller = 0;
 
-    public List<SteamVR_TrackedObject> trackedObjects = new List<SteamVR_TrackedObject>();
+    public List<GameObject> trackedObjects = new List<GameObject>();
     public Vector3[] lastPositions = new Vector3[16];
     public float[] distancesTravelled = new float[16];
 
@@ -75,14 +75,14 @@ public class Calibrate : EditorWindow {
             }
         }
 
-        if(step == Steps.StartSearching) {
+        if(step == Steps.StartSearching || step == Steps.Searching) {
             GUILayout.Space(20);
             GUILayout.Label("Find Devices", "boldLabel");
             if(GUILayout.Button("Start finding devices") && step == Steps.StartSearching && EditorApplication.isPlaying) {
                 step = Steps.Searching;
                 CreateDevices();
             }
-            GUILayout.Label("Move one controller at a time, every 5sec the most moved device will be shown");
+            GUILayout.Label("Move one controller at a time, every sec the most moved device will be shown");
             GUILayout.Label(status);
         }
 
@@ -92,7 +92,7 @@ public class Calibrate : EditorWindow {
     void Update() {
         if(step == Steps.Searching) {
 
-            for(int i = 1; i <= 16; i++) {
+            for(int i = 1; i < 16; i++) {
                 if(lastPositions[i] != null) {
                     distancesTravelled[i] += (trackedObjects[i].transform.position - lastPositions[i]).magnitude;
                 }
@@ -101,7 +101,11 @@ public class Calibrate : EditorWindow {
 
 
 
-            if(Time.time % 1f < 0.05f) {
+            if(Time.time % 1f < 0.1f) {
+                for (int i = 1; i < 16; i++)
+                {
+                    distancesTravelled[i] = 0;
+                }
                 int index = System.Array.IndexOf( distancesTravelled,  Mathf.Max(distancesTravelled)) + 1;
                 status = "Device " + index + " Moved the most";
             }
@@ -115,7 +119,7 @@ public class Calibrate : EditorWindow {
             GameObject go = new GameObject();
             SteamVR_TrackedObject ob = go.AddComponent<SteamVR_TrackedObject>();
             ob.index = (SteamVR_TrackedObject.EIndex) i;
-            trackedObjects.Add(ob);
+            trackedObjects.Add(go);
         }
         
     }
